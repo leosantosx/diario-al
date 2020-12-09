@@ -1,0 +1,13 @@
+{
+    "type": "postgres",
+    "host": "tuffi.db.elephantsql.com",
+    "port": "5432",
+    "username": "ebvglcde",
+    "password": "zKonsQIBMiuM7pbynwmZoacR8h7ZycSY",
+    "database": "ebvglcde",
+    "entities": ["src/models/*.ts"],
+    "migrations": ["src/database/migrations/*.ts"],
+    "cli": {
+        "migrationsDir": "migrations"
+    }
+}
