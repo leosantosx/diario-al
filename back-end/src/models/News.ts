@@ -11,6 +11,9 @@ class News {
     @Column()
     content: string
 
+    @Column()
+    slug: string
+
     @Column('text', { array: true })
     images: string[]
 

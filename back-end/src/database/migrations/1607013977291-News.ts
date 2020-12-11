@@ -27,6 +27,10 @@ export class News1607013977291 implements MigrationInterface {
                         type: 'varchar',
                     },
                     {
+                        name: 'slug',
+                        type: 'varchar',
+                    },
+                    {
                         name: 'date',
                         type: 'varchar',
                     }

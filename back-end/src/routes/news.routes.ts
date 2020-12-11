@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getCustomRepository } from 'typeorm'
+import { getCustomRepository, getRepository } from 'typeorm'
 import CreateNewsService from '../services/CreateNewsService'
 import NewsRepository from '../repository/newsRepository'
 
@@ -10,6 +10,14 @@ const upload = multer(config)
 
 const newsRoutes = Router()
 
+newsRoutes.get('/', async (request, response) => {
+    const newsRepository = getCustomRepository(NewsRepository)
+
+    const news = await newsRepository.find()
+    
+    response.json(news)
+})
+
 newsRoutes.get('/:id', async (request, response) => {
     const id = parseInt(request.params.id)
 
@@ -18,6 +26,17 @@ newsRoutes.get('/:id', async (request, response) => {
     const pageNews = await newsRepository.getPage({ pageId: id })
     
     response.json(pageNews)
+})
+
+newsRoutes.get('/pesquisa/:slug', async (request, response) => {
+    const { slug } = request.params
+
+    const newsRepository = getCustomRepository(NewsRepository)
+    const news = await newsRepository.findOne({
+        where: { slug }
+    })
+
+    return response.json(news || {})
 })
 
 newsRoutes.post('/', upload.array('file'), async (request, response) => {
@@ -33,6 +52,16 @@ newsRoutes.post('/', upload.array('file'), async (request, response) => {
      })
 
     return response.json(news) 
+})
+
+newsRoutes.delete('/:id', async (request, response) => {
+    const { id } = request.params
+    const newsRepositoty = getCustomRepository(NewsRepository)
+
+    const news = await newsRepositoty.deleteNews({ id })
+
+    return response.json(news)
+
 })
 
 export default newsRoutes
