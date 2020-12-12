@@ -55,7 +55,7 @@ newsRoutes.post('/', ensureAuthenticated, upload.array('file'), async (request, 
         images,
      })
 
-    return response.json(news) 
+    return response.status(201).json(news) 
 })
 
 newsRoutes.delete('/:id', ensureAuthenticated, async (request, response) => {
