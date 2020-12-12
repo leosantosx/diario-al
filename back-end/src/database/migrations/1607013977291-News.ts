@@ -15,7 +15,7 @@ export class News1607013977291 implements MigrationInterface {
                     },
                     {
                         name: 'images',
-                        type: 'text',
+                        type: 'json',
                         isNullable: true,
                     },
                     {

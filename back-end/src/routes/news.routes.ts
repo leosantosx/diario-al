@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { getCustomRepository, getRepository } from 'typeorm'
+import { getCustomRepository } from 'typeorm'
 import CreateNewsService from '../services/CreateNewsService'
 import NewsRepository from '../repository/newsRepository'
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 
 import multer from 'multer'
 import config from '../config/upload'
@@ -18,17 +19,18 @@ newsRoutes.get('/', async (request, response) => {
     response.json(news)
 })
 
-newsRoutes.get('/:id', async (request, response) => {
-    const id = parseInt(request.params.id)
+newsRoutes.get('/:pageId', async (request, response) => {
 
+    const pageId = parseInt(request.params.pageId)
+   
     const newsRepository = getCustomRepository(NewsRepository)
 
-    const pageNews = await newsRepository.getPage({ pageId: id })
+    const pageNews = await newsRepository.getPage({ pageId })
     
     response.json(pageNews)
 })
 
-newsRoutes.get('/pesquisa/:slug', async (request, response) => {
+newsRoutes.get('/al/:slug', async (request, response) => {
     const { slug } = request.params
 
     const newsRepository = getCustomRepository(NewsRepository)
@@ -39,11 +41,13 @@ newsRoutes.get('/pesquisa/:slug', async (request, response) => {
     return response.json(news || {})
 })
 
-newsRoutes.post('/', upload.array('file'), async (request, response) => {
+newsRoutes.post('/', ensureAuthenticated, upload.array('file'), async (request, response) => {
     const { title, content } = request.body
+
     const createNews = new CreateNewsService()
 
-    const images = request.files.map(file => file.location)
+    const images = request.files.map(
+        (file: { location: string }) => file.location)
     
     const news = await createNews.execute({ 
         title,
@@ -54,7 +58,7 @@ newsRoutes.post('/', upload.array('file'), async (request, response) => {
     return response.json(news) 
 })
 
-newsRoutes.delete('/:id', async (request, response) => {
+newsRoutes.delete('/:id', ensureAuthenticated, async (request, response) => {
     const { id } = request.params
     const newsRepositoty = getCustomRepository(NewsRepository)
 

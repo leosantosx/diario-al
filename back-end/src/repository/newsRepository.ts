@@ -1,12 +1,11 @@
 import { EntityRepository, Repository } from 'typeorm'
-import News from '../models/News'
-import dotenv from 'dotenv'
 import Aws from 'aws-sdk'
+import News from '../models/News'
+import ErrorHandler from '../errors/ErrorHandler'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
-
-import ErrorHandler from '../errors/ErrorHandler'
 
 interface Request {
     pageId: number
@@ -21,33 +20,46 @@ interface id {
 class NewsRepository extends Repository<News> {
     public async getPage({ pageId }: Request ) {
         
-        const [ news, total ] = await this.findAndCount({
-            take: pageId
+        const [news, total] = await this.findAndCount({
+            skip: (pageId - 1) * 10,
+            take: 10,
         })
-        
-        if(pageId <= 0 || pageId > total){
-            throw new ErrorHandler('Invalid parameter')
-        }
-        
+
         return {
             news,
             count: total,
-            remain: total - pageId,
         }
     }
     
-    private getLinksImages(imagesName: any){
-        imagesName = imagesName.replace(/\"/g, '')
-        imagesName = imagesName.replace(/\{/g, '')
-        imagesName = imagesName.replace(/\}/g, '')
-        imagesName = imagesName.split(',')
 
-        const images: { Key: string }[] = []
-        imagesName.forEach((image: string) => {
-            images.push({ Key: image.split('/').slice(-1)[0] })
+    public async deleteNews({ id }: id) {
+
+        const news = await this.findOne({
+            where: { id }
         })
         
-        return images
+        if(!news){
+            throw new ErrorHandler('News not found')
+        }
+
+        const imagesKeys = this.getKeysImages(news.images)
+        this.deleteImageS3(imagesKeys)
+        
+        await this.remove(news)
+
+        return {
+            status: 'Ok'
+        }
+    }
+
+    private getKeysImages(images: any){
+        const imagesKeys: { Key: string }[] = []
+        images.forEach((image: string) => {
+            let imageKey = image.split('/').slice(-1)[0]
+            imagesKeys.push( { Key: imageKey } )
+        })
+        
+        return imagesKeys
     }
     
     private deleteImageS3(images: any){
@@ -67,26 +79,6 @@ class NewsRepository extends Repository<News> {
             if (err) console.log(err, err.stack);
             else console.log('delete', data);
         });
-    }
-
-    public async deleteNews({ id }: id){
-
-        const news = await this.findOne({
-            where: { id }
-        })
-        
-        if(!news){
-            throw new ErrorHandler('News not found')
-        }
-
-        const images = this.getLinksImages(news.images)
-        this.deleteImageS3(images)
-        
-        this.delete(news)
-
-        return {
-            status: 'Ok'
-        }
     }
 }
 

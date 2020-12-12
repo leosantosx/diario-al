@@ -1,10 +1,11 @@
+import { Json } from 'aws-sdk/clients/robomaker'
 import { getRepository } from 'typeorm'
 import News from '../models/News'
 
 interface Request {
     title: string
     content: string
-    images: string[]
+    images: Json
 }
 
 class CreateNewsService {
@@ -37,9 +38,9 @@ class CreateNewsService {
         const news = newsRepository.create({
             title,
             slug: this.parserSlug(title),
-            content,
             images,
-            date: date.toLocaleString()
+            content,
+            date: date.toLocaleString(),
         })
 
         await newsRepository.save(news)
