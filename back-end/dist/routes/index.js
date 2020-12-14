@@ -3,20 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
 var _express = require("express");
 
-var _news = require("./news.routes");
+var _news = _interopRequireDefault(require("./news.routes"));
 
-var _news2 = _interopRequireDefault(_news);
-
-var _sessions = require("./sessions.routes");
-
-var _sessions2 = _interopRequireDefault(_sessions);
+var _sessions = _interopRequireDefault(require("./sessions.routes"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const routes = (0, _express.Router)();
-routes.use('/news', _news2.default);
-routes.use('/sessions', _sessions2.default);
-exports.default = routes;
+routes.use('/news', _news.default);
+routes.use('/sessions', _sessions.default);
+var _default = routes;
+exports.default = _default;

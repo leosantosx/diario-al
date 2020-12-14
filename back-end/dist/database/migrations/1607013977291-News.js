@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.News1607013977291 = undefined;
+exports.News1607013977291 = void 0;
 
 var _typeorm = require("typeorm");
 

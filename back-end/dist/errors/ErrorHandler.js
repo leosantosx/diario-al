@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
 class ErrorHandler {
   constructor(message, statusCode = 400) {
@@ -14,4 +15,5 @@ class ErrorHandler {
 
 }
 
-exports.default = ErrorHandler;
+var _default = ErrorHandler;
+exports.default = _default;

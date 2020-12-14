@@ -3,14 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
 var _bcryptjs = require("bcryptjs");
 
 var _typeorm = require("typeorm");
 
-var _Admin = require("../models/Admin");
-
-var _Admin2 = _interopRequireDefault(_Admin);
+var _Admin = _interopRequireDefault(require("../models/Admin"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,7 +19,7 @@ class CreateNewAdminService {
     password,
     code
   }) {
-    const adminRepository = (0, _typeorm.getRepository)(_Admin2.default);
+    const adminRepository = (0, _typeorm.getRepository)(_Admin.default);
     const hashedPassword = await (0, _bcryptjs.hash)(password, 8);
     const admin = adminRepository.create({
       email,
@@ -34,4 +33,5 @@ class CreateNewAdminService {
 
 }
 
-exports.default = CreateNewAdminService;
+var _default = CreateNewAdminService;
+exports.default = _default;

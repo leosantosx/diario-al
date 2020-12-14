@@ -3,32 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _dec, _class;
+exports.default = void 0;
 
 var _typeorm = require("typeorm");
 
-var _awsSdk = require("aws-sdk");
+var _awsSdk = _interopRequireDefault(require("aws-sdk"));
 
-var _awsSdk2 = _interopRequireDefault(_awsSdk);
+var _News = _interopRequireDefault(require("../models/News"));
 
-var _News = require("../models/News");
+var _ErrorHandler = _interopRequireDefault(require("../errors/ErrorHandler"));
 
-var _News2 = _interopRequireDefault(_News);
+var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _ErrorHandler = require("../errors/ErrorHandler");
-
-var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
-
-var _dotenv = require("dotenv");
-
-var _dotenv2 = _interopRequireDefault(_dotenv);
+var _dec, _class;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_dotenv2.default.config();
+_dotenv.default.config();
 
-let NewsRepository = (_dec = (0, _typeorm.EntityRepository)(_News2.default), _dec(_class = class NewsRepository extends _typeorm.Repository {
+let NewsRepository = (_dec = (0, _typeorm.EntityRepository)(_News.default), _dec(_class = class NewsRepository extends _typeorm.Repository {
   async getPage({
     pageId
   }) {
@@ -52,7 +45,7 @@ let NewsRepository = (_dec = (0, _typeorm.EntityRepository)(_News2.default), _de
     });
 
     if (!news) {
-      throw new _ErrorHandler2.default('News not found');
+      throw new _ErrorHandler.default('News not found');
     }
 
     const imagesKeys = this.getKeysImages(news.images);
@@ -75,7 +68,7 @@ let NewsRepository = (_dec = (0, _typeorm.EntityRepository)(_News2.default), _de
   }
 
   deleteImageS3(images) {
-    const s3 = new _awsSdk2.default.S3({
+    const s3 = new _awsSdk.default.S3({
       accessKeyId: process.env.AWS_ACCESS_KEY,
       secretAccessKey: process.env.AWS_SECRET_KEY
     });
@@ -91,4 +84,5 @@ let NewsRepository = (_dec = (0, _typeorm.EntityRepository)(_News2.default), _de
   }
 
 }) || _class);
-exports.default = NewsRepository;
+var _default = NewsRepository;
+exports.default = _default;

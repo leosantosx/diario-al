@@ -3,12 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
 var _typeorm = require("typeorm");
 
-var _News = require("../models/News");
-
-var _News2 = _interopRequireDefault(_News);
+var _News = _interopRequireDefault(require("../models/News"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26,7 +25,7 @@ class CreateNewsService {
     content,
     images
   }) {
-    const newsRepository = (0, _typeorm.getRepository)(_News2.default);
+    const newsRepository = (0, _typeorm.getRepository)(_News.default);
     const date = new Date();
     const news = newsRepository.create({
       title,
@@ -41,4 +40,5 @@ class CreateNewsService {
 
 }
 
-exports.default = CreateNewsService;
+var _default = CreateNewsService;
+exports.default = _default;
