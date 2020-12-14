@@ -31,7 +31,7 @@ class AuthenticateAdminService {
             throw new ErrorHandler('Invalid credentials')
         }
 
-        const passwordMatched = await compare(password, user.password)
+        const passwordMatched = await compare(password, user.password!)
 
         if(!passwordMatched){
             throw new ErrorHandler('Invalid credentials')

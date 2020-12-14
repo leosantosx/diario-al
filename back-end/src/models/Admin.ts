@@ -9,7 +9,7 @@ class Admin {
     email: string
 
     @Column()
-    password: string
+    password?: string
 
     @Column()
     code: string

@@ -7,6 +7,10 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 import multer from 'multer'
 import config from '../config/upload'
 
+interface Image {
+    image: string
+}
+
 const upload = multer(config)
 
 const newsRoutes = Router()

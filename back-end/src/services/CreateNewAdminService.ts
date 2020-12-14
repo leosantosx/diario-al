@@ -22,7 +22,7 @@ class CreateNewAdminService {
 
         await adminRepository.save(admin)
 
-        delete admin.password
+        delete admin?.password
 
         return admin
     }

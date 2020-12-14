@@ -13,7 +13,7 @@ const s3 = new Aws.S3({
 export default ({
     storage: multerS3({
         s3: s3,
-        bucket: process.env.BUCKET_NAME,
+        bucket: process.env.BUCKET_NAME!,
         acl: 'public-read',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         metadata: function(req, file, cb){

@@ -69,7 +69,7 @@ class NewsRepository extends Repository<News> {
         })
 
         const params = {
-            Bucket: process.env.BUCKET_NAME, 
+            Bucket: process.env.BUCKET_NAME!, 
             Delete: { 
                 Objects: images,
             },  
